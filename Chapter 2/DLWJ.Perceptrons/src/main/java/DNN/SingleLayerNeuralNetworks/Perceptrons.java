@@ -1,8 +1,9 @@
 package DNN.SingleLayerNeuralNetworks;
 
+import java.util.Arrays;
 import java.util.Random;
-import DNN.util.GaussianDistribution;
-import static DNN.util.ActivationFunction.step;
+import DLWJ.util.GaussianDistribution;
+import static DLWJ.util.ActivationFunction.step;
 
 
 public class Perceptrons {
@@ -10,6 +11,10 @@ public class Perceptrons {
     public int nIn;       // dimensions of input data
     public double[] w;  // weight vector of perceptrons
 
+    @Override
+    public String toString() {
+        return "Perceptrons{w=" + Arrays.toString(w) + '}';
+    }
 
     public Perceptrons(int nIn) {
 
@@ -67,7 +72,6 @@ public class Perceptrons {
 
         double[][] test_X = new double[test_N][nIn];  // input data for test
         int[] test_T = new int[test_N];               // label of inputs
-        int[] predicted_T = new int[test_N];          // output data predicted by the model
 
         final int epochs = 2000;   // maximum training epochs
         final double learningRate = 1.;  // learning rate can be 1 in perceptrons
@@ -121,6 +125,8 @@ public class Perceptrons {
 
         // train models
         while (true) {
+            System.out.println("epoch = [" + epoch + "]  this =[" + classifier.toString() + "] accuracy=" +
+                    evaluate(classifier, test_X, test_T) );
             int classified_ = 0;
 
             for (int i=0; i < train_N; i++) {
@@ -134,15 +140,21 @@ public class Perceptrons {
         }
 
 
+
+    }
+
+    static double evaluate(Perceptrons classifier, double test_X[][], int test_T[]){
+        //
+        // Evaluate the model
+        //
+        int test_N = test_X.length;
+
+        int[] predicted_T = new int[test_N];          // output data predicted by the model
+
         // test
         for (int i = 0; i < test_N; i++) {
             predicted_T[i] = classifier.predict(test_X[i]);
         }
-
-
-        //
-        // Evaluate the model
-        //
 
         int[][] confusionMatrix = new int[2][2];
         double accuracy = 0.;
@@ -175,12 +187,13 @@ public class Perceptrons {
         precision /= confusionMatrix[0][0] + confusionMatrix[1][0];
         recall /= confusionMatrix[0][0] + confusionMatrix[0][1];
 
-        System.out.println("----------------------------");
-        System.out.println("Perceptrons model evaluation");
-        System.out.println("----------------------------");
-        System.out.printf("Accuracy:  %.1f %%\n", accuracy * 100);
-        System.out.printf("Precision: %.1f %%\n", precision * 100);
-        System.out.printf("Recall:    %.1f %%\n", recall * 100);
+//        System.out.println("----------------------------");
+//        System.out.println("Perceptrons model evaluation");
+//        System.out.println("----------------------------");
+//        System.out.printf("Accuracy:  %.1f %%\n", accuracy * 100);
+//        System.out.printf("Precision: %.1f %%\n", precision * 100);
+//        System.out.printf("Recall:    %.1f %%\n", recall * 100);
 
+        return accuracy;
     }
 }

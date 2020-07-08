@@ -38,4 +38,20 @@ public final class GaussianDistribution {
         return c * Math.cos( 2.0 * Math.PI * rng.nextDouble() ) * var + mean;
     }
 
+    public static void main(String[] args) {
+
+        double array[] = new double[64];
+        GaussianDistribution test1 = new GaussianDistribution(-2.0, 1.0, null);
+
+        for(int i = 0; i < array.length; i++) {
+            array[i] = test1.random();
+        }
+
+        for(int i = 0; i < array.length; i++) {
+            System.out.print(String.format("%8.6f  ", array[i]));
+            if(i > 0 && i % 16 == 15) System.out.println();
+        }
+
+    }
+
 }
